@@ -1,0 +1,39 @@
+{
+  "name": "js-insert",
+  "version": "0.0.0",
+  "main": "lib/js-insert.js",
+  "description": "Insert javascript into javascript",
+  "homepage": "https://github.com/jeffreykwan/js-insert",
+  "bugs": "https://github.com/jeffreykwan/js-insert/issues",
+  "author": {
+    "name": "Jeffrey Kwan",
+    "email": "jeffureekwan@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jeffreykwan/js-insert"
+  },
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ],
+  "scripts": {
+    "test": "./node_modules/.bin/mocha -b test -u tdd  -R spec"
+  },
+  "dependencies": {
+    "escodegen": "^1.3.2",
+    "esprima": "^1.2.2",
+    "traverse": "^0.6.6"
+  },
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-watch": "~0.5.0",
+    "grunt-mocha-test": "~0.7.0",
+    "jshint-stylish": "~0.1.3",
+    "load-grunt-tasks": "~0.2.0",
+    "mocha": "~1.17.1",
+    "time-grunt": "~0.1.1"
+  }
+}
