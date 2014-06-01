@@ -8,11 +8,12 @@ var inserter = require('../lib/inserter.js');
 describe('Inserter', function () {
   before(function () {
     var tmpDir = __dirname + '/.tmp';
+
     if (!fs.existsSync(tmpDir)) {
-      fs.mkdirSync(__dirname + '/.tmp');
+      fs.mkdirSync(tmpDir);
     }
 
-    process.chdir(__dirname + '/.tmp');
+    process.chdir(tmpDir);
   });
 
   beforeEach(function () {
@@ -21,12 +22,12 @@ describe('Inserter', function () {
 
   describe('parameter', function () {
     beforeEach(function () {
-      fs.writeFileSync('temp.js', 'function test() {};');
+      fs.writeFileSync('temp.js', 'function test() {}');
     });
 
     it('should insert parameter into function', function () {
       var inserted = inserter.parameter('temp.js', 'test', 'a');
-      expect(inserted).to.contain('a');
+      expect(JSON.stringify(inserted)).to.contain('test(a)');
     });
   });
 });
