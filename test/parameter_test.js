@@ -25,4 +25,24 @@ describe('Parameter', function () {
       expect(result).to.contain('test2(a)');
     });
   });
+
+  describe('function call', function () {
+
+    it('should add parameter to a function call', function () {
+      var ast = esprima.parse('f1();');
+
+      parameter.funcCall(ast, {funcName: 'f1', parameter: 'a'});
+
+      var result = gen.generate(ast);
+      expect(result).to.contain('f1(\'a\')');
+    });
+
+    it('should add parameter to member call', function () {
+      var ast = esprima.parse('obj.f1(a)');
+
+      parameter.funcCall(ast, {obj: 'obj', funcName: 'f1', parameter: 'b'});
+
+      expect(gen.generate(ast)).to.contain('obj.f1(a, \'b\')');
+    });
+  });
 });
