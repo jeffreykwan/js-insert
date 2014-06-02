@@ -1,27 +1,25 @@
-# js-insert [![Build Status](https://secure.travis-ci.org/jeffreykwan/js-insert.png?branch=master)](http://travis-ci.org/jeffreykwan/js-insert)
+# js-insert [![Build Status](https://travis-ci.org/jeffreykwan/js-insert.svg?branch=master)](https://travis-ci.org/jeffreykwan/js-insert)
 
 Insert javascript into javascript
 
-## Getting Started
+## Install
 Install the module with: `npm install js-insert`
 
 ```javascript
-var js-insert = require('js-insert');
-js-insert.awesome(); // "awesome"
+var inserter = require('js-insert');
+
 ```
 
-## Documentation
-_(Coming soon)_
+## API
+**parameter**: add a parameter to a function
+```javascript
+var inserter = require('js-insert');
 
-## Examples
-_(Coming soon)_
-
-## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
+inserter.parameter(<fileName>, <function>, <parameter>);
+```
 
 ## Release History
 - **v0.0.1**, *TBD*
-    - Big Bang
-    
+
 ## License
 Copyright (c) 2014 Jeffrey Kwan. Licensed under the MIT license.

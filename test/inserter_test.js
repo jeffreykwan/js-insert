@@ -5,7 +5,7 @@ var expect = require('expect.js');
 
 var inserter = require('../lib/inserter.js');
 
-describe('Inserter', function () {
+describe('Insert', function () {
   before(function () {
     var tmpDir = __dirname + '/.tmp';
 
@@ -21,13 +21,18 @@ describe('Inserter', function () {
   });
 
   describe('parameter', function () {
-    beforeEach(function () {
-      fs.writeFileSync('temp.js', 'function test() {}');
-    });
 
     it('should insert parameter into function', function () {
+      fs.writeFileSync('temp.js', 'function test() {}');
       var inserted = inserter.parameter('temp.js', 'test', 'a');
-      expect(JSON.stringify(inserted)).to.contain('test(a)');
+      expect(inserted).to.contain('test(a)');
+    });
+
+    it('should insert parameter to only given function name', function () {
+      fs.writeFileSync('temp.js', 'function test() {function test2() {}}');
+      var result = inserter.parameter('temp.js', 'test2', 'a');
+      expect(result).to.contain('test()');
+      expect(result).to.contain('test2(a)');
     });
   });
 });
