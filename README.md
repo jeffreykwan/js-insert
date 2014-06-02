@@ -6,16 +6,15 @@ Insert javascript into javascript
 Install the module with: `npm install js-insert`
 
 ```javascript
-var inserter = require('js-insert');
-
+var insert = require('js-insert');
 ```
 
 ## API
 **parameter**: add a parameter to a function
 ```javascript
-var inserter = require('js-insert');
+var insert = require('js-insert');
 
-inserter.parameter(<fileName>, <function>, <parameter>);
+insert.parameter.func(<fileName>, <function>, <parameter>);
 ```
 
 ## Release History
