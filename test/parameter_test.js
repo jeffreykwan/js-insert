@@ -79,9 +79,10 @@ describe('Parameter', function () {
     });
 
     it('should add parameter to function parameter', function () {
-      var ast = esprima.parse('f1(function (a) {})');
+      var ast = esprima.parse('obj.f1(function (a) {})');
 
       parameter.funcCall(ast, {
+        obj: 'obj',
         funcName: 'f1',
         func: {
           parameter: 'b',
@@ -89,7 +90,7 @@ describe('Parameter', function () {
         }
       });
 
-      expect(gen.generate(ast)).to.contain('f1(function (a, b)');
+      expect(gen.generate(ast)).to.contain('obj.f1(function (a, b)');
     });
   });
 });

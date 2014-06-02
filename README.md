@@ -26,12 +26,14 @@ insert.parameter.funcCall(options);
 
 //f1() ->f1(a)
 insert.parameter.funcCall({
+  fileName: 'example.js',
   funcName: 'f1',
   parameter: 'a'
 });
 
 //obj.f1(a) -> obj.f1(a, 'b')
 insert.parameter.funcCall({
+  fileName: 'example.js',
   obj: 'obj',
   funcName: 'f1',
   parmeter: 'b',
@@ -40,6 +42,7 @@ insert.parameter.funcCall({
 
 //obj.f1([a]) -> obj.f1([a, b]);
 insert.parameter.funcCall({
+  fileName: 'example.js',
   obj: 'obj',
   funcName: 'f1',
   arr: {
@@ -50,6 +53,7 @@ insert.parameter.funcCall({
 
 //obj1.f1(function (a) {}) -> obj1.f1(function (a, b) {})
 insert.parameter.funcCall({
+  fileName: 'example.js',
   obj: 'obj',
   funcName: 'f1',
   func: {
@@ -61,6 +65,7 @@ insert.parameter.funcCall({
 `options` available:
 ```javascript
 {
+  fileName: ''
   obj: '',
   funcName: '',
   parameter: '',

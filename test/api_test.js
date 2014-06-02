@@ -50,5 +50,20 @@ describe('API', function () {
 
       expect(fs.readFileSync('temp.js', {encoding: 'utf8'})).to.contain('abc(a, b)');
     });
+
+    it('funcCall: should read file, add parameter to a function call, write file', function () {
+      fs.writeFileSync('temp.js', 'define([a], function (a) {})');
+
+      api.parameter.funcCall({
+        fileName: 'temp.js',
+        funcName: 'define',
+        arr: {
+          parameter: 'b',
+          type: 'variable'
+        }
+      });
+
+      expect(fs.readFileSync('temp.js', {encoding: 'utf8'})).to.contain('define([\n    a,\n    b\n]');
+    });
   });
 });
