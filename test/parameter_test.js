@@ -63,5 +63,33 @@ describe('Parameter', function () {
 
       expect(gen.generate(ast)).to.contain('f1(b)');
     });
+
+    it('should add parameter to array parameter', function () {
+      var ast = esprima.parse('f1([a])');
+
+      parameter.funcCall(ast, {
+        funcName: 'f1',
+        arr: {
+          parameter: 'b',
+          type: 'variable'
+        }
+      });
+
+      expect(gen.generate(ast)).to.contain('f1([\n    a,\n    b\n]);');
+    });
+
+    it('should add parameter to function parameter', function () {
+      var ast = esprima.parse('f1(function (a) {})');
+
+      parameter.funcCall(ast, {
+        funcName: 'f1',
+        func: {
+          parameter: 'b',
+          type: 'variable'
+        }
+      });
+
+      expect(gen.generate(ast)).to.contain('f1(function (a, b)');
+    });
   });
 });

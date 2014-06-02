@@ -37,6 +37,26 @@ insert.parameter.funcCall({
   parmeter: 'b',
   parameterType: 'literal'
 });
+
+//obj.f1([a]) -> obj.f1([a, b]);
+insert.parameter.funcCall({
+  obj: 'obj',
+  funcName: 'f1',
+  arr: {
+    paramter: 'b',
+    type: 'variable'
+  }
+});
+
+//obj1.f1(function (a) {}) -> obj1.f1(function (a, b) {})
+insert.parameter.funcCall({
+  obj: 'obj',
+  funcName: 'f1',
+  func: {
+    paramter: 'b',
+    type: 'variable'
+  }
+});
 ```
 `options` available:
 ```javascript
@@ -45,6 +65,16 @@ insert.parameter.funcCall({
   funcName: '',
   parameter: '',
   parameterType: 'literal|variable' //default: variable,
+
+  arr: {
+    paramter: '',
+    type: '',
+  },
+
+  func: {
+    paramter: '',
+    type: '',
+  }
 }
 ```
 
