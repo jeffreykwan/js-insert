@@ -31,7 +31,11 @@ describe('Parameter', function () {
     it('should add parameter to a function call', function () {
       var ast = esprima.parse('f1();');
 
-      parameter.funcCall(ast, {funcName: 'f1', parameter: 'a'});
+      parameter.funcCall(ast, {
+        funcName: 'f1',
+        parameter: 'a',
+        parameterType: 'literal'
+      });
 
       var result = gen.generate(ast);
       expect(result).to.contain('f1(\'a\')');
@@ -40,9 +44,24 @@ describe('Parameter', function () {
     it('should add parameter to member call', function () {
       var ast = esprima.parse('obj.f1(a)');
 
-      parameter.funcCall(ast, {obj: 'obj', funcName: 'f1', parameter: 'b'});
+      parameter.funcCall(ast, {
+        obj: 'obj',
+        funcName: 'f1',
+        parameter: 'b',
+        parameterType: 'variable'});
 
-      expect(gen.generate(ast)).to.contain('obj.f1(a, \'b\')');
+      expect(gen.generate(ast)).to.contain('obj.f1(a, b)');
+    });
+
+    it('should default add a variable parameter', function () {
+      var ast = esprima.parse('f1();');
+
+      parameter.funcCall(ast, {
+        funcName: 'f1',
+        parameter: 'b'
+      });
+
+      expect(gen.generate(ast)).to.contain('f1(b)');
     });
   });
 });

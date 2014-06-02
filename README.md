@@ -10,11 +10,42 @@ var insert = require('js-insert');
 ```
 
 ## API
-**parameter**: add a parameter to a function
+###parameter###
+**func**: add a parameter to a function
 ```javascript
 var insert = require('js-insert');
 
 insert.parameter.func(<fileName>, <function>, <parameter>);
+```
+
+**funcCall**: add a parameter to a function call
+```javascript
+var insert = require('js-insert');
+
+insert.parameter.funcCall(options);
+
+//f1() ->f1(a)
+insert.parameter.funcCall({
+  funcName: 'f1',
+  parameter: 'a'
+});
+
+//obj.f1(a) -> obj.f1(a, 'b')
+insert.parameter.funcCall({
+  obj: 'obj',
+  funcName: 'f1',
+  parmeter: 'b',
+  parameterType: 'literal'
+});
+```
+`options` available:
+```javascript
+{
+  obj: '',
+  funcName: '',
+  parameter: '',
+  parameterType: 'literal|variable' //default: variable,
+}
 ```
 
 ## Release History
