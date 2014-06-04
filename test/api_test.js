@@ -5,7 +5,7 @@ var esprima = require('esprima');
 var gen = require('escodegen');
 var expect = require('expect.js');
 
-var api = require('../lib/api.js');
+var api = require('../lib/api');
 
 describe('API', function () {
   before(function () {
@@ -22,11 +22,11 @@ describe('API', function () {
     fs.openSync('temp.js', 'w');
   });
 
-  describe('parse', function () {
+  describe('parseFile', function () {
     it('should be able to parse a file into AST', function () {
       fs.writeFileSync('temp.js', 'function test() {}');
 
-      var ast = JSON.stringify(api.parse('temp.js'));
+      var ast = JSON.stringify(api.parseFile('temp.js'));
 
       expect(ast).to.equal(JSON.stringify(esprima.parse('function test() {}')));
     });

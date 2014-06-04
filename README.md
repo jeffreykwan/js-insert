@@ -10,6 +10,26 @@ var insert = require('js-insert');
 ```
 
 ## API
+**into**: insert code anywhere
+```javascript
+var insert = require('js-insert');
+
+insert.into({
+  fileName: '',
+  code: '',
+  funcName: '', //insert into function body
+  before: { // before specified function call
+    object: '',
+    funcName: '',
+    declaration: false|true //before function declaration
+  },
+  after: { // after specified function call
+    object: '',
+    funcName: '',
+    declaration: false|true //before function declaration
+  }
+})
+
 ###parameter###
 **func**: add a parameter to a function
 ```javascript
@@ -24,7 +44,7 @@ var insert = require('js-insert');
 
 insert.parameter.funcCall(options);
 
-//f1() ->f1(a)
+//f1() -> f1(a)
 insert.parameter.funcCall({
   fileName: 'example.js',
   funcName: 'f1',

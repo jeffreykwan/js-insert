@@ -13,10 +13,12 @@
     "type": "git",
     "url": "https://github.com/jeffreykwan/js-insert"
   },
-  "licenses": [
-    {
-      "type": "MIT"
-    }
+  "license":  "MIT",
+  "keywords":[
+    "insert",
+    "ast",
+    "parse",
+    "scaffold"
   ],
   "scripts": {
     "test": "./node_modules/.bin/mocha -b test -u bdd -R spec"
