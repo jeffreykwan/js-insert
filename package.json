@@ -1,6 +1,6 @@
 {
   "name": "js-insert",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "lib/api.js",
   "description": "Insert javascript into javascript",
   "homepage": "https://github.com/jeffreykwan/js-insert",

@@ -29,6 +29,7 @@ insert.into({
     declaration: false|true //before function declaration
   }
 })
+```
 
 ###parameter###
 **func**: add a parameter to a function

@@ -61,7 +61,36 @@ describe('Body', function () {
     });
 
     it('should insert code before specified method call', function () {
+      var code = 'var a = 1;';
+      var ast = esprima.parse('obj.b();');
 
+      body.into(ast, {
+        code: code,
+        before: {
+          obj: 'obj',
+          funcName: 'b'
+        }
+      });
+
+      expect(escodegen.generate(ast)).
+      to.contain('var a = 1;\nobj.b()');
+    });
+
+    it('should insert code in a function before a method call', function () {
+      var code = 'ab();';
+      var ast = esprima.parse('function define() { obj.a(); }');
+
+      body.into(ast, {
+        funcName: 'define',
+        code: code,
+        before: {
+          obj: 'obj',
+          funcName: 'a'
+        }
+      });
+
+      expect(escodegen.generate(ast)).
+      to.contain('define() {\n    ab();\n    obj.a');
     });
 
     it('should insert before function declaration', function () {
