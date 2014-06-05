@@ -11,6 +11,7 @@ var insert = require('js-insert');
 
 ## API
 **into**: insert code anywhere
+> WIP: After functionality not complete. Before does not support method declarations at the moment.
 ```javascript
 var insert = require('js-insert');
 
@@ -21,7 +22,8 @@ insert.into({
   before: { // before specified function call
     object: '',
     funcName: '',
-    declaration: false|true //before function declaration
+    declaration: false|true //before function declaration,
+    returnCall: false|true //before the return statement
   },
   after: { // after specified function call
     object: '',
