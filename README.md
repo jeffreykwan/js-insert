@@ -12,6 +12,7 @@ var insert = require('js-insert');
 ## API
 **into**: insert code anywhere
 > WIP: After functionality not complete. Before does not support method declarations at the moment.
+
 ```javascript
 var insert = require('js-insert');
 
