@@ -123,6 +123,21 @@ describe('Body', function () {
       expect(escodegen.generate(ast)).to.contain('var a = 1;\nfunction define()');
     });
 
+    it('should insert before function declaration using variable', function () {
+      var code = 'var a = 1';
+      var ast = esprima.parse('var define = function () {}');
+
+      body.into(ast, {
+        code: code,
+        before: {
+          funcName: 'define',
+          declaration: true
+        }
+      });
+
+      expect(escodegen.generate(ast)).to.contain('var a = 1;\nvar define');
+    });
+
     it('should insert before method declaration', function () {
 
     });
