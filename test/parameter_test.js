@@ -32,9 +32,10 @@ describe('Parameter', function () {
       var ast = esprima.parse('f1();');
 
       parameter.funcCall(ast, {
-        funcName: 'f1',
-        parameter: 'a',
-        parameterType: 'literal'
+        func: 'f1'
+      }, {
+        param: 'a',
+        type: 'literal'
       });
 
       var result = gen.generate(ast);
@@ -46,9 +47,11 @@ describe('Parameter', function () {
 
       parameter.funcCall(ast, {
         obj: 'obj',
-        funcName: 'f1',
-        parameter: 'b',
-        parameterType: 'variable'});
+        func: 'f1'
+      }, {
+        param: 'b',
+        type: 'variable'
+      });
 
       expect(gen.generate(ast)).to.contain('obj.f1(a, b)');
     });
@@ -57,8 +60,9 @@ describe('Parameter', function () {
       var ast = esprima.parse('f1();');
 
       parameter.funcCall(ast, {
-        funcName: 'f1',
-        parameter: 'b'
+        func: 'f1'
+      }, {
+        param: 'b'
       });
 
       expect(gen.generate(ast)).to.contain('f1(b)');
@@ -68,14 +72,15 @@ describe('Parameter', function () {
       var ast = esprima.parse('f1([a])');
 
       parameter.funcCall(ast, {
-        funcName: 'f1',
+        func: 'f1'
+      }, {
         arr: {
-          parameter: 'b',
+          param: 'b',
           type: 'variable'
         }
       });
 
-      expect(gen.generate(ast)).to.contain('f1([\n    a,\n    b\n]);');
+      expect(gen.generate(ast).replace(/\s+/g, ' ')).to.contain('f1([ a, b ]);');
     });
 
     it('should add parameter to function parameter', function () {
@@ -83,14 +88,50 @@ describe('Parameter', function () {
 
       parameter.funcCall(ast, {
         obj: 'obj',
-        funcName: 'f1',
+        func: 'f1'
+      }, {
         func: {
-          parameter: 'b',
+          param: 'b',
           type: 'variable'
         }
       });
 
       expect(gen.generate(ast)).to.contain('obj.f1(function (a, b)');
+    });
+
+    xit('should insert into an object parameter', function () {
+      var ast = esprima.parse('obj.f1({a: \'hi\'});');
+
+      parameter.funcCall(ast, {
+        obj: 'obj',
+        func: 'f1'
+      }, {
+        objParam: {
+          key: 'b',
+          value: 'bye'
+        }
+      });
+
+      expect(gen.generate(ast).replace(/\s+/g, ' ')).to.contain('a: \'hi\', b: \'bye\'');
+    });
+
+    xit('should insert into an object two levels in', function () {
+      var ast = esprima.parse('obj.f1({parse: {}})');
+
+      parameter.funcCall(ast, {
+        obj: 'obj',
+        func: 'f1'
+      }, {
+        obj: {
+          obj: {
+            name: 'parse',
+            key: 'a',
+            value: 'bbc'
+          }
+        }
+      });
+
+      expect(gen.generate(ast).replace(/\s+/g, ' ')).to.contain('parse: { a: \'bbc\'');
     });
   });
 });

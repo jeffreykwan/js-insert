@@ -46,63 +46,77 @@ insert.parameter.func(<fileName>, <function>, <parameter>);
 ```javascript
 var insert = require('js-insert');
 
-insert.parameter.funcCall(options);
+insert.parameter.funcCall(<fileName>, <match>, <insert>);
 
 //f1() -> f1(a)
-insert.parameter.funcCall({
-  fileName: 'example.js',
-  funcName: 'f1',
-  parameter: 'a'
+insert.parameter.funcCall('example.js', 
+  { func: 'f1' }, 
+  { param: 'a' }
 });
 
 //obj.f1(a) -> obj.f1(a, 'b')
-insert.parameter.funcCall({
-  fileName: 'example.js',
+insert.parameter.funcCall('example.js', 
+{
   obj: 'obj',
-  funcName: 'f1',
-  parmeter: 'b',
-  parameterType: 'literal'
+  func: 'f1'
+}, {
+  parm: 'b',
+  type: 'literal'
 });
 
 //obj.f1([a]) -> obj.f1([a, b]);
-insert.parameter.funcCall({
-  fileName: 'example.js',
+insert.parameter.funcCall('example', 
+{  
   obj: 'obj',
-  funcName: 'f1',
+  func: 'f1',
+}, {
   arr: {
-    paramter: 'b',
+    param: 'b',
     type: 'variable'
   }
 });
 
 //obj1.f1(function (a) {}) -> obj1.f1(function (a, b) {})
-insert.parameter.funcCall({
-  fileName: 'example.js',
+insert.parameter.funcCall('example.js', 
+{
   obj: 'obj',
-  funcName: 'f1',
+  func: 'f1'
+}, {
   func: {
-    paramter: 'b',
+    param: 'b',
     type: 'variable'
   }
 });
-```
-`options` available:
+
+`match`:
 ```javascript
 {
-  fileName: ''
   obj: '',
-  funcName: '',
-  parameter: '',
-  parameterType: 'literal|variable' //default: variable,
+  func: ''
+}
+```
+
+`insert`:
+```javascript
+{
+  param: '',
+  type: ''literal|variable', //default: variable
 
   arr: {
-    paramter: '',
-    type: '',
+    param: '',
+    type: '' //Similar to above
   },
 
   func: {
-    paramter: '',
-    type: '',
+    param: '',
+    type: '' //Similar to above
+  },
+
+  obj: {
+    name: ''
+    key: '',
+    value: '',
+    type: '' //Similar to above
   }
 }
 ```

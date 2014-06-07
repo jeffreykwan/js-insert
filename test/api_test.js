@@ -65,11 +65,11 @@ describe('API', function () {
     it('funcCall: should read file, add parameter to a function call, write file', function () {
       fs.writeFileSync('temp.js', 'define([a], function (a) {})');
 
-      api.parameter.funcCall({
-        fileName: 'temp.js',
-        funcName: 'define',
+      api.parameter.funcCall('temp.js', {
+        func: 'define'
+      }, {
         arr: {
-          parameter: 'b',
+          param: 'b',
           type: 'variable'
         }
       });
