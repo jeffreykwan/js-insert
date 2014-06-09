@@ -68,7 +68,7 @@ insert.parameter.funcCall('example.js',
 insert.parameter.funcCall('example', 
 {  
   obj: 'obj',
-  func: 'f1',
+  func: 'f1'
 }, {
   arr: {
     param: 'b',
@@ -101,7 +101,7 @@ insert.parameter.funcCall('example.js',
 ```javascript
 {
   param: '',
-  type: ''literal|variable', //default: variable
+  type: 'literal|variable', //default: variable
 
   arr: {
     param: '',
@@ -114,7 +114,7 @@ insert.parameter.funcCall('example.js',
   },
 
   obj: {
-    name: ''
+    name: '',
     key: '',
     value: '',
     type: '' //Similar to above
