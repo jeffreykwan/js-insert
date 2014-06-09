@@ -87,6 +87,7 @@ insert.parameter.funcCall('example.js',
     type: 'variable'
   }
 });
+```
 
 `match`:
 ```javascript
