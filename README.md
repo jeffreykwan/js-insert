@@ -71,12 +71,11 @@ insert.parameter.funcCall('example',
   func: 'f1'
 }, {
   arr: {
-    param: 'b',
-    type: 'variable'
+    param: 'b'
   }
 });
 
-//obj1.f1(function (a) {}) -> obj1.f1(function (a, b) {})
+//obj1.f1(function (a) {}) -> obj1.f1(function (a, 'b') {})
 insert.parameter.funcCall('example.js', 
 {
   obj: 'obj',
@@ -84,7 +83,32 @@ insert.parameter.funcCall('example.js',
 }, {
   func: {
     param: 'b',
-    type: 'variable'
+    type: 'literal'
+  }
+});
+
+//obj1.f1({}); -> obj1.f1({a: a});
+insert.parameter.funcCall('example.js',
+{
+  obj: 'obj',
+  func: 'f1'
+}, {
+  obj: {
+    key: a,
+    value: a
+  }
+});
+
+//obj1.f1({}); -> obj1.f1({a: 'a'});
+insert.parameter.funcCall('example.js',
+{
+  obj: 'obj',
+  func: 'f1'
+}, {
+  obj: {
+    key: a,
+    value: a,
+    type: 'literal'
   }
 });
 ```
