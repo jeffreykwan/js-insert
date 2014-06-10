@@ -99,20 +99,20 @@ describe('Parameter', function () {
       expect(gen.generate(ast)).to.contain('obj.f1(function (a, b)');
     });
 
-    xit('should insert into an object parameter', function () {
+    it('should insert into an object parameter', function () {
       var ast = esprima.parse('obj.f1({a: \'hi\'});');
 
       parameter.funcCall(ast, {
         obj: 'obj',
         func: 'f1'
       }, {
-        objParam: {
+        obj: {
           key: 'b',
           value: 'bye'
         }
       });
 
-      expect(gen.generate(ast).replace(/\s+/g, ' ')).to.contain('a: \'hi\', b: \'bye\'');
+      expect(gen.generate(ast).replace(/\s+/g, ' ')).to.contain('a: \'hi\', b: bye');
     });
 
     xit('should insert into an object two levels in', function () {

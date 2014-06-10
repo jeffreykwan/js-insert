@@ -114,7 +114,6 @@ insert.parameter.funcCall('example.js',
   },
 
   obj: {
-    name: '',
     key: '',
     value: '',
     type: '' //Similar to above
