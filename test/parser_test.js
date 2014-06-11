@@ -18,6 +18,12 @@ describe('Parser', function () {
       var node = parser.parse(ast, {func: 'test'});
       expect(ast.body).eql(node);
     });
+
+    it('should find nested function declaration with no identifier', function () {
+      var ast = esprima.parse('define(function () {});');
+      var node = parser.parse(ast, {func: 'define', nested: {func: true}});
+      expect(JSON.stringify(node)).to.contain('"type":"FunctionExpression","id":null');
+    })
   });
 
   describe('#Function Call', function () {
@@ -68,5 +74,6 @@ describe('Parser', function () {
       expect(esprima.parse('obj.f2()').body).eql(node);
     });
   });
+
 
 });
