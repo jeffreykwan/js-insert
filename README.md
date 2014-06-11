@@ -10,137 +10,54 @@ var insert = require('js-insert');
 ```
 
 ## API
-**into**: insert code anywhere
-> WIP: After functionality not complete. Before does not support method declarations at the moment.
-
 ```javascript
-var insert = require('js-insert');
-
-insert.into({
-  fileName: '',
-  code: '',
-  funcName: '', //insert into function body
-  before: { // before specified function call
-    object: '',
-    funcName: '',
-    declaration: false|true //before function declaration,
-    returnCall: false|true //before the return statement
-  },
-  after: { // after specified function call
-    object: '',
-    funcName: '',
-    declaration: false|true //before function declaration
-  }
-})
+insert.into(<filename>, <matcher>, <insert>);
 ```
 
-###parameter###
-**func**: add a parameter to a function
-```javascript
-var insert = require('js-insert');
+`matcher` options:
 
-insert.parameter.func(<fileName>, <function>, <parameter>);
-```
+Defines the structure of where to insert code into
 
-**funcCall**: add a parameter to a function call
-```javascript
-var insert = require('js-insert');
-
-insert.parameter.funcCall(<fileName>, <match>, <insert>);
-
-//f1() -> f1(a)
-insert.parameter.funcCall('example.js', 
-  { func: 'f1' }, 
-  { param: 'a' }
-});
-
-//obj.f1(a) -> obj.f1(a, 'b')
-insert.parameter.funcCall('example.js', 
-{
-  obj: 'obj',
-  func: 'f1'
-}, {
-  parm: 'b',
-  type: 'literal'
-});
-
-//obj.f1([a]) -> obj.f1([a, b]);
-insert.parameter.funcCall('example', 
-{  
-  obj: 'obj',
-  func: 'f1'
-}, {
-  arr: {
-    param: 'b'
-  }
-});
-
-//obj1.f1(function (a) {}) -> obj1.f1(function (a, 'b') {})
-insert.parameter.funcCall('example.js', 
-{
-  obj: 'obj',
-  func: 'f1'
-}, {
-  func: {
-    param: 'b',
-    type: 'literal'
-  }
-});
-
-//obj1.f1({}); -> obj1.f1({a: a});
-insert.parameter.funcCall('example.js',
-{
-  obj: 'obj',
-  func: 'f1'
-}, {
-  obj: {
-    key: a,
-    value: a
-  }
-});
-
-//obj1.f1({}); -> obj1.f1({a: 'a'});
-insert.parameter.funcCall('example.js',
-{
-  obj: 'obj',
-  func: 'f1'
-}, {
-  obj: {
-    key: a,
-    value: a,
-    type: 'literal'
-  }
-});
-```
-
-`match`:
 ```javascript
 {
   obj: '',
-  func: ''
+  func: '',
+  nested: {
+    obj: '',
+    func: '',
+  }
 }
 ```
 
-`insert`:
+`value` options:
 ```javascript
 {
-  param: '',
-  type: 'literal|variable', //default: variable
-
-  arr: {
-    param: '',
-    type: '' //Similar to above
+  code: {
+    code: '',
+    before: {
+      obj: '',
+      func: '',
+      ret: true
+    },
+    after: {
+    }
   },
-
-  func: {
+  param: {
     param: '',
-    type: '' //Similar to above
-  },
-
-  obj: {
-    key: '',
-    value: '',
-    type: '' //Similar to above
+    type: 'literal|variable', //variable is default
+    obj: {
+      key: '',
+      value: ''
+      type: 'literal|variable' //variable is default
+    },
+    func: {
+      param: '',
+      type: 'literal|variable' //variable is default
+    },
+    arr: {
+      param: '',
+      type: 'literal|variable' //variable is default
+    }
   }
 }
 ```
