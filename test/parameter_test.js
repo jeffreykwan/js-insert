@@ -10,19 +10,16 @@ describe('Parameter', function () {
 
   describe('function declaration', function () {
 
-    it('should insert parameter into function', function () {
+    it('should insert parameter into function declaration', function () {
       var ast = esprima.parse('function test() {}');
-      parameter.func(ast, 'test', 'a');
+      parameter.add(ast.body[0], {param: 'a'});
       expect(gen.generate(ast)).to.contain('test(a)');
     });
 
-    it('should insert parameter to only given function name', function () {
-      var ast = esprima.parse('function test() {function test2() {}}');
-      parameter.func(ast, 'test2', 'a');
-
-      var result = gen.generate(ast);
-      expect(result).to.contain('test()');
-      expect(result).to.contain('test2(a)');
+    it('should insert parameter into function declared as variable', function () {
+      var ast = esprima.parse('var test = function () {}');
+      parameter.add(ast.body[0], {param: 'a'});
+      expect(gen.generate(ast)).to.contain('function (a)');
     });
   });
 
@@ -31,9 +28,7 @@ describe('Parameter', function () {
     it('should add parameter to a function call', function () {
       var ast = esprima.parse('f1();');
 
-      parameter.funcCall(ast, {
-        func: 'f1'
-      }, {
+      parameter.add(ast.body[0], {
         param: 'a',
         type: 'literal'
       });
@@ -45,10 +40,7 @@ describe('Parameter', function () {
     it('should add parameter to member call', function () {
       var ast = esprima.parse('obj.f1(a)');
 
-      parameter.funcCall(ast, {
-        obj: 'obj',
-        func: 'f1'
-      }, {
+      parameter.add(ast.body[0], {
         param: 'b',
         type: 'variable'
       });
@@ -59,9 +51,7 @@ describe('Parameter', function () {
     it('should default add a variable parameter', function () {
       var ast = esprima.parse('f1();');
 
-      parameter.funcCall(ast, {
-        func: 'f1'
-      }, {
+      parameter.add(ast.body[0], {
         param: 'b'
       });
 
@@ -71,9 +61,7 @@ describe('Parameter', function () {
     it('should add parameter to array parameter', function () {
       var ast = esprima.parse('f1([a])');
 
-      parameter.funcCall(ast, {
-        func: 'f1'
-      }, {
+      parameter.add(ast.body[0], {
         arr: {
           param: 'b',
           type: 'variable'
@@ -86,10 +74,7 @@ describe('Parameter', function () {
     it('should add parameter to function parameter', function () {
       var ast = esprima.parse('obj.f1(function (a) {})');
 
-      parameter.funcCall(ast, {
-        obj: 'obj',
-        func: 'f1'
-      }, {
+      parameter.add(ast.body[0], {
         func: {
           param: 'b',
           type: 'variable'
@@ -102,10 +87,7 @@ describe('Parameter', function () {
     it('should insert into an object parameter', function () {
       var ast = esprima.parse('obj.f1({a: \'hi\'});');
 
-      parameter.funcCall(ast, {
-        obj: 'obj',
-        func: 'f1'
-      }, {
+      parameter.add(ast.body[0], {
         obj: {
           key: 'b',
           value: 'bye'
@@ -118,10 +100,7 @@ describe('Parameter', function () {
     it('should insert into an object parameter with a string', function () {
       var ast = esprima.parse('obj.f1({a: \'hi\'});');
 
-      parameter.funcCall(ast, {
-        obj: 'obj',
-        func: 'f1'
-      }, {
+      parameter.add(ast.body[0], {
         obj: {
           key: 'b',
           value: 'bye',

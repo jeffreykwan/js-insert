@@ -43,7 +43,7 @@ describe('API', function () {
   });
 
   describe('body', function () {
-    it('into: read file, insert code, write file', function () {
+    xit('into: read file, insert code, write file', function () {
       api.into({
         fileName: 'temp.js',
         code: 'var a = 1;'
@@ -53,28 +53,40 @@ describe('API', function () {
     });
   });
 
-  describe('parameter', function () {
-    it('func: should read file, add a parameter to function, write file', function () {
-      fs.writeFileSync('temp.js', 'function abc(a) {}');
+  describe('into', function () {
+    describe('parameter', function () {
+      it('should read file, add a parameter to function call, write file', function () {
+        fs.writeFileSync('temp.js', 'abc(a)');
 
-      api.parameter.func('temp.js', 'abc', 'b');
+        api.into('temp.js', {func: 'abc'}, {param: {param: 'b'}});
 
-      expect(fs.readFileSync('temp.js', {encoding: 'utf8'})).to.contain('abc(a, b)');
-    });
-
-    it('funcCall: should read file, add parameter to a function call, write file', function () {
-      fs.writeFileSync('temp.js', 'define([a], function (a) {})');
-
-      api.parameter.funcCall('temp.js', {
-        func: 'define'
-      }, {
-        arr: {
-          param: 'b',
-          type: 'variable'
-        }
+        expect(fs.readFileSync('temp.js', {encoding: 'utf8'})).to.contain('abc(a, b)');
       });
 
-      expect(fs.readFileSync('temp.js', {encoding: 'utf8'})).to.contain('define([\n    a,\n    b\n]');
+      it('should read file, add a parameter to function declaration, write file', function () {
+        fs.writeFileSync('temp.js', 'function abc(a) {}');
+
+        api.into('temp.js', {func: 'abc'}, {param: {param: 'b'}});
+
+        expect(fs.readFileSync('temp.js', {encoding: 'utf8'})).to.contain('abc(a, b)');
+      });
+
+      it('funcCall: should read file, add parameter to a function call, write file', function () {
+        fs.writeFileSync('temp.js', 'define([a], function (a) {})');
+
+        api.into('temp.js', {
+          func: 'define'
+        }, {
+          param: {
+            arr: {
+              param: 'b',
+              type: 'variable'
+            }
+          }
+        });
+
+        expect(fs.readFileSync('temp.js', {encoding: 'utf8'})).to.contain('define([\n    a,\n    b\n]');
+      });
     });
   });
 });
