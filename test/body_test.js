@@ -12,7 +12,7 @@ describe('Body', function () {
       var code = '\'Hello World!\'';
       var ast = esprima.parse('');
 
-      body.into(ast, {
+      body.in(ast, {
         code: code
       });
 
@@ -20,24 +20,22 @@ describe('Body', function () {
     });
 
     it('should insert code into specified function', function () {
-      var code = '\'Hello World\'';
+      var expected = '\'Hello World\'';
       var ast = esprima.parse('function define() {}');
 
-      body.into(ast, {
-        funcName: 'define',
-        code: code
+      body.in(ast.body[0], {
+        code: expected
       });
 
       expect(escodegen.generate(ast)).
-      to.contain('define() {\n    ' + code);
+      to.contain('define() {\n    ' + expected);
     });
 
     it('should insert code into function defined as a variable', function () {
       var code = '\'Hello World\'';
       var ast = esprima.parse('var define = function () {}');
 
-      body.into(ast, {
-        funcName: 'define',
+      body.in(ast.body[0], {
         code: code
       });
 
@@ -49,10 +47,10 @@ describe('Body', function () {
       var code = 'var a = 1;';
       var ast = esprima.parse('b();');
 
-      body.into(ast, {
+      body.in(ast, {
         code: code,
         before: {
-          funcName: 'b'
+          func: 'b'
         }
       });
 
@@ -64,11 +62,11 @@ describe('Body', function () {
       var code = 'var a = 1;';
       var ast = esprima.parse('obj.b();');
 
-      body.into(ast, {
+      body.in(ast, {
         code: code,
         before: {
           obj: 'obj',
-          funcName: 'b'
+          func: 'b'
         }
       });
 
@@ -80,8 +78,7 @@ describe('Body', function () {
       var code = 'ab();';
       var ast = esprima.parse('function define() { obj.a(); }');
 
-      body.into(ast, {
-        funcName: 'define',
+      body.in(ast.body[0], {
         code: code,
         before: {
           obj: 'obj',
@@ -97,11 +94,10 @@ describe('Body', function () {
       var code = 'var a = 1';
       var ast = esprima.parse('function define() { return true; }');
 
-      body.into(ast, {
+      body.in(ast.body[0], {
         code: code,
-        funcName: 'define',
         before: {
-          returnCall: true
+          ret: true
         }
       });
 
@@ -112,11 +108,10 @@ describe('Body', function () {
       var code = 'var a = 1';
       var ast = esprima.parse('function define() {}');
 
-      body.into(ast, {
+      body.in(ast, {
         code: code,
         before: {
-          funcName: 'define',
-          declaration: true
+          func: 'define'
         }
       });
 
@@ -127,11 +122,10 @@ describe('Body', function () {
       var code = 'var a = 1';
       var ast = esprima.parse('var define = function () {}');
 
-      body.into(ast, {
+      body.in(ast, {
         code: code,
         before: {
-          funcName: 'define',
-          declaration: true
+          func: 'define'
         }
       });
 
@@ -139,23 +133,76 @@ describe('Body', function () {
     });
 
     it('should insert before method declaration', function () {
+      var code = 'var a = 1';
+      var ast = esprima.parse('obj1.f1 = function () {}');
 
+      body.in(ast, {
+        code: code,
+        before: {
+          obj: 'obj1',
+          func: 'f1'
+        }
+      });
+
+      expect(escodegen.generate(ast)).to.contain('var a = 1;\nobj1.f1');
     });
 
     it('should insert code after specified function call', function () {
+      var code = 'var a = 1';
+      var ast = esprima.parse('f1()');
 
+      body.in(ast, {
+        code: code,
+        after: {
+          func: 'f1'
+        }
+      });
+
+      expect(escodegen.generate(ast)).to.contain('f1();\nvar a = 1');
     });
 
     it('should insert code after specified method call', function () {
+      var code = 'var a = 1';
+      var ast = esprima.parse('obj.f1()');
 
+      body.in(ast, {
+        code: code,
+        after: {
+          obj: 'obj',
+          func: 'f1'
+        }
+      });
+
+      expect(escodegen.generate(ast)).to.contain('obj.f1();\nvar a = 1');
     });
 
     it('should insert after function declaration', function () {
+      var code = 'var a = 1';
+      var ast = esprima.parse('function f1() {}');
 
+      body.in(ast, {
+        code: code,
+        after: {
+          func: 'f1'
+        }
+      });
+
+      expect(escodegen.generate(ast)).to.contain('function f1() {\n}\nvar a = 1;');
     });
 
     it('should insert after method declaration', function () {
+      var code = 'var a = 1';
+      var ast = esprima.parse('obj1.f1 = function () {}');
 
+      body.in(ast, {
+        code: code,
+        after: {
+          obj: 'obj1',
+          func: 'f1'
+        }
+      });
+
+      expect(escodegen.generate(ast)).to.contain('function () {\n};\nvar a = 1;');
     });
   });
 });

@@ -42,18 +42,17 @@ describe('API', function () {
     });
   });
 
-  describe('body', function () {
-    xit('into: read file, insert code, write file', function () {
-      api.into({
-        fileName: 'temp.js',
-        code: 'var a = 1;'
-      });
-
-      expect(fs.readFileSync('temp.js', {encoding: 'utf8'})).to.contain('var a = 1');
-    });
-  });
-
   describe('into', function () {
+    describe('body', function () {
+      it('should read file, add code to function, write file', function () {
+        fs.writeFileSync('temp.js', 'function abc(a) {}');
+
+        api.into('temp.js', {func: 'abc'}, {code: {code: 'var a = 1'}});
+
+        expect(fs.readFileSync('temp.js', {encoding: 'utf8'})).to.contain('var a = 1');
+
+      });
+    });
     describe('parameter', function () {
       it('should read file, add a parameter to function call, write file', function () {
         fs.writeFileSync('temp.js', 'abc(a)');
