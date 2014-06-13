@@ -24,7 +24,9 @@ Defines the structure of where to insert code into
   func: '',
   nested: {
     obj: '',
-    func: '',
+    nested: {
+      key: ''
+    }
   }
 }
 ```

@@ -23,7 +23,7 @@ describe('Parser', function () {
       var ast = esprima.parse('define(function () {});');
       var node = parser.parse(ast, {func: 'define', nested: {func: true}});
       expect(JSON.stringify(node)).to.contain('"type":"FunctionExpression","id":null');
-    })
+    });
   });
 
   describe('#Function Call', function () {
@@ -56,7 +56,7 @@ describe('Parser', function () {
     it('should find nested method declaration node', function () {
       var ast = esprima.parse('obj.f1 = function () {obj.f3 = function () {} }');
       var node = parser.parse(ast, {obj: 'obj', func: 'f1', nested: {obj: 'obj', func: 'f3'}});
-      expect(esprima.parse('obj.f3 = function () {}').body).eql(node);
+      expect(node).to.eql(esprima.parse('obj.f3 = function () {}').body);
     });
 
   });
@@ -75,5 +75,22 @@ describe('Parser', function () {
     });
   });
 
+  describe('#Object Expression', function () {
+    it('should find object expression', function () {
+      var ast = esprima.parse('def.o1({})');
+      var node = parser.parse(ast, {obj: 'def', func: 'o1', nested: {obj: true, func: true}});
+      expect(node[0].type).to.equal('ObjectExpression');
+    });
+
+    it('should find keys of an object expression', function () {
+      var ast = esprima.parse('obj.a({paths: {}})');
+      var node = parser.parse(ast, {
+      obj: 'obj', func: 'a', nested: {
+        obj: true, func: true, nested: {
+          obj: true, func: true, key: 'paths'}}});
+      expect(node[0].type).to.equal('Property');
+      expect(node[0].key.name).to.equal('paths');
+    });
+  });
 
 });
