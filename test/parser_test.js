@@ -91,13 +91,13 @@ describe('Parser', function () {
     });
 
     it('should find keys of an object expression', function () {
-      var ast = esprima.parse('obj.a({paths: {}})');
+      var ast = esprima.parse('obj.a({paths: {x: \'b\'}})');
       var node = parser.parse(ast, {
       obj: 'obj', func: 'a', nested: {
         obj: true, func: true, nested: {
           obj: true, func: true, key: 'paths'}}});
-      expect(node[0].type).to.equal('Property');
-      expect(node[0].key.name).to.equal('paths');
+      expect(node[0].type).to.equal('ObjectExpression');
+      expect(node[0].properties[0].key.name).to.equal('x');
     });
   });
 });

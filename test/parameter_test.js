@@ -101,25 +101,6 @@ describe('Parameter', function () {
 
         expect(gen.generate(ast).replace(/\s+/g, ' ')).to.contain('a: \'hi\', b: \'bye\'');
       });
-
-      xit('should insert into an object two levels in', function () {
-        var ast = esprima.parse('obj.f1({parse: {}})');
-
-        parameter.funcCall(ast, {
-          obj: 'obj',
-          func: 'f1'
-        }, {
-          obj: {
-            obj: {
-              name: 'parse',
-              key: 'a',
-              value: 'bbc'
-            }
-          }
-        });
-
-        expect(gen.generate(ast).replace(/\s+/g, ' ')).to.contain('parse: { a: \'bbc\'');
-      });
     });
   });
 
