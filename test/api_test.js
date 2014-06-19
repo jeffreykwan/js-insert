@@ -87,13 +87,13 @@ describe('API', function () {
         expect(fs.readFileSync('temp.js', {encoding: 'utf8'})).to.contain('define([\n    a,\n    b\n]');
       });
 
-      it('should insert into an object two levels in', function () {
+      it('should insert into an object of an object parmeter', function () {
         fs.writeFileSync('temp.js', 'obj.f1({parse: {a: \'b\'}})');
 
         api.into('temp.js', {
           obj: 'obj', func: 'f1', nested: {
-            obj: true, func: true, nested: {
-              obj: true, func: true, key: 'parse'
+            nested: {
+              key: 'parse'
             }
           }
         }, {
@@ -107,6 +107,30 @@ describe('API', function () {
         });
 
         expect(fs.readFileSync('temp.js', {encoding: 'utf8'}).replace(/\s+/g, ' ')).to.contain('b: hi');
+      });
+
+      it('should insert into a nested object of an object parameter', function () {
+        fs.writeFileSync('temp.js', 'obj.f1({parse: {a: {b: \'t\' }}})');
+
+        api.into('temp.js', {
+          obj: 'obj', func: 'f1', nested: {
+            nested: {
+              nested: {
+                key: 'b'
+              }
+            }
+          }
+        }, {
+          param: {
+            obj: {
+              key: 'c',
+              value: 'hi',
+              type: 'variable'
+            }
+          }
+        });
+
+        expect(fs.readFileSync('temp.js', {encoding: 'utf8'}).replace(/\s+/g, ' ')).to.contain('c: hi');
       });
     });
   });
