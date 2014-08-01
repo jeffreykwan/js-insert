@@ -22,19 +22,27 @@ describe('API', function () {
     fs.openSync('temp.js', 'w');
   });
 
-  describe('parseFile', function () {
+  describe('parse', function () {
     it('should be able to parse a file into AST', function () {
       fs.writeFileSync('temp.js', 'function test() {}');
 
       var ast = JSON.stringify(api.parseFile('temp.js'));
 
-      expect(ast).to.equal(JSON.stringify(esprima.parse('function test() {}')));
+      expect(ast).to.equal(
+        JSON.stringify(api.parse('function test() {}')));
+    });
+
+    it('should perserve comments', function () {
+      var ast = api.parse('// hi\nfunction test() {}');
+      api.generate('temp.js', ast);
+
+      expect(fs.readFileSync('temp.js', {encoding: 'utf8'})).to.contain('// hi');
     });
   });
 
   describe('generate', function () {
     it('should be able to create a file with code from ast', function () {
-      var ast = esprima.parse('function test() {function test2() {}}');
+      var ast = api.parse('function test() {function test2() {}}');
 
       api.generate('temp.js', ast);
 
