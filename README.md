@@ -1,4 +1,5 @@
 # js-insert [![Build Status](https://travis-ci.org/jeffreykwan/js-insert.svg?branch=master)](https://travis-ci.org/jeffreykwan/js-insert)
+Undergoing re-write!!
 
 Insert javascript into javascript
 
